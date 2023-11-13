@@ -9,8 +9,8 @@ const App = () => (
   <Router>
     <Navbar />
     <Routes>
-      <Route path="/" element={<Accueil />} />
-      <Route path="/dashboard" element={<DashboardAdmin />} />
+      <Route path="/" exact component={Accueil} />
+      <Route path="/dashboard" component={DashboardAdmin} />
     </Routes>
   </Router>
 );

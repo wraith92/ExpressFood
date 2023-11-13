@@ -1,21 +1,26 @@
 [
-    {
-      "nom": "Poulet rôti",
-      "ingredients": ["poulet", "sel", "poivre", "herbes"],
-      "prix": 15.99,
-      "type": "plat"
-    },
-    {
-      "nom": "Tarte aux pommes",
-      "ingredients": ["pâte feuilletée", "pommes", "sucre", "cannelle"],
-      "prix": 8.99,
-      "type": "dessert"
-    },
-    {
-      "nom": "Pâtes à la carbonara",
-      "ingredients": ["pâtes", "lardons", "œufs", "parmesan"],
-      "prix": 12.50,
-      "type": "plat"
-    }
-  ]
-  
+  {
+    "_id": 1,
+    "image": "images/image1.jpg",
+    "nom": "Poulet rôti",
+    "ingredients": ["poulet", "sel", "poivre", "herbes"],
+    "prix": 15.99,
+    "type": "plat"
+  },
+  {
+    "_id": 2,
+    "image": "images/image2.jpg",
+    "nom": "Tarte aux pommes",
+    "ingredients": ["pâte feuilletée", "pommes", "sucre", "cannelle"],
+    "prix": 8.99,
+    "type": "dessert"
+  },
+  {
+    "_id": 3,
+    "image": "images/image3.jpg",
+    "nom": "Pâtes à la carbonara",
+    "ingredients": ["pâtes", "lardons", "œufs", "parmesan"],
+    "prix": 12.50,
+    "type": "plat"
+  }
+]

@@ -36,6 +36,6 @@ export const fetchPlatAction = () => {
             .catch((error) => {
                 const errorMsg = error.message;
                 dispatch(fetchPlatFailure(errorMsg));
-            }); 
+            });
     };
 }

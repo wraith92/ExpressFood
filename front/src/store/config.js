@@ -9,7 +9,7 @@ import PlatReducer from '../reducer/PlatReducer';
 
 const rootReducer = combineReducers({
     users:UserReducer,
-    plat:PlatReducer
+    plats:PlatReducer
 });
 const middleware = [thunk];
 

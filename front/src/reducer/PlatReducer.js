@@ -20,13 +20,17 @@ const PlatReducer = (state = initialState, action) => {
         case FETCH_PLAT_SUCCESS:
             return {
                 loading: false,
-                plats: action.payload,
+                data: {
+                    plats: action.payload,
+                },
                 error: "",
             };
         case FETCH_PLAT_FAILURE:
             return {
                 loading: false,
-                plats: [],
+                data: {
+                    plats: [],
+                },
                 error: action.payload,
             };
         default:

@@ -7,6 +7,7 @@ import { useDispatch,useSelector } from 'react-redux';
 
 const Accueil = () => {
   const dispatch = useDispatch();
+  const [menu, setMenu] = useState([]);
   const plat = useSelector((state) => state.plat);
   const [menu, setMenu] = useState([]);
   useEffect(() => {

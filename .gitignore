@@ -1,5 +1,5 @@
 # Ignorer les dossiers node_modules
-serveur/node_modules
+server/node_modules
 client/node_modules
 
 # Ignorer les dossiers build

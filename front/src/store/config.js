@@ -8,8 +8,8 @@ import PlatReducer from '../reducer/PlatReducer';
 
 
 const rootReducer = combineReducers({
-    UserReducer,
-    PlatReducer
+    users:UserReducer,
+    plat:PlatReducer
 });
 const middleware = [thunk];
 

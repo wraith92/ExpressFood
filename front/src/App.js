@@ -1,6 +1,6 @@
 // App.js
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Accueil from './screen/Accueil';
 import DashboardAdmin from './screen/DashboardAdmin';
@@ -8,8 +8,10 @@ import DashboardAdmin from './screen/DashboardAdmin';
 const App = () => (
   <Router>
     <Navbar />
-    <Route path="/" exact component={Accueil} />
-    <Route path="/dashboard" component={DashboardAdmin} />
+    <Routes>
+      <Route path="/" element={<Accueil />} />
+      <Route path="/dashboard" element={<DashboardAdmin />} />
+    </Routes>
   </Router>
 );
 

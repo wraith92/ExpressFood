@@ -7,6 +7,7 @@ import { useDispatch,useSelector } from 'react-redux';
 
 const Accueil = () => {
   const dispatch = useDispatch();
+  const [menu, setMenu] = useState([]);
   const plat = useSelector((state) => state.plat);
   useEffect(() => {
     dispatch(fetchPlatAction());
@@ -17,7 +18,7 @@ const Accueil = () => {
     <div>
       <h2>Menu du jour</h2>
       <Container className="d-flex flex-wrap justify-content-center">
-        {plat.map((plat) => (
+        {menu.map((plat) => (
           <Card
             key={plat.id}
             className="m-3"

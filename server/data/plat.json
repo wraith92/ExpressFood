@@ -1,0 +1,21 @@
+[
+    {
+      "nom": "Poulet rôti",
+      "ingredients": ["poulet", "sel", "poivre", "herbes"],
+      "prix": 15.99,
+      "type": "plat"
+    },
+    {
+      "nom": "Tarte aux pommes",
+      "ingredients": ["pâte feuilletée", "pommes", "sucre", "cannelle"],
+      "prix": 8.99,
+      "type": "dessert"
+    },
+    {
+      "nom": "Pâtes à la carbonara",
+      "ingredients": ["pâtes", "lardons", "œufs", "parmesan"],
+      "prix": 12.50,
+      "type": "plat"
+    }
+  ]
+  

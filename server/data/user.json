@@ -1,0 +1,33 @@
+[
+    {
+      "id": 1,
+      "nom": "Doe",
+      "prenom": "John",
+      "email": "john.doe@example.com",
+      "motDePasse": "motdepasse123",
+      "role": "utilisateur",
+      "statut": "actif",
+      "position": "développeur"
+    },
+    {
+      "id": 2,
+      "nom": "Smith",
+      "prenom": "Alice",
+      "email": "alice.smith@example.com",
+      "motDePasse": "password456",
+      "role": "administrateur",
+      "statut": "inactif",
+      "position": "analyste"
+    },
+    {
+      "id": 3,
+      "nom": "Johnson",
+      "prenom": "Bob",
+      "email": "bob.johnson@example.com",
+      "motDePasse": "secure789",
+      "role": "utilisateur",
+      "statut": "actif",
+      "position": "testeur"
+    }
+  ]
+  

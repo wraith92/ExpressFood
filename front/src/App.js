@@ -5,7 +5,7 @@ import Navbar from './components/Navbar';
 import Accueil from './screen/Accueil';
 import DashboardAdmin from './screen/DashboardAdmin';
 import PageLivreur from './screen/PageLivreur';
-
+import LoginPage from './screen/LoginPage';
 const App = () => (
   <Router>
     <Navbar />
@@ -13,6 +13,7 @@ const App = () => (
       <Route path="/" element={<Accueil/>} />
       <Route path="/dashboard" element={<DashboardAdmin/>} />
       <Route path="/livreur" element={<PageLivreur/>} />
+      <Route path="/login" element={<LoginPage/>} />
     </Routes>
   </Router>
 );

@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const plats = require('../../models/Plats');
-const jwtSecret = 'ma_cle_secrete'; 
+const jwtSecret = 'ma_cle_secrete';
 const { verifyToken } = require('./jwt');
 
-router.get('/', verifyToken, (req, res) => {
+router.get('/', (req, res) => {
   plats.find()
     .then(plats => res.json(plats))
     .catch(err => res.status(404).json({ noplatsFound: 'Pas de plats trouvés...' }));

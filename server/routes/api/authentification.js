@@ -7,6 +7,8 @@ const bcrypt = require('bcrypt');
 router.post('/login', (req, res) => {
     const email = req.body.email;
     const motDePasse = req.body.motDePasse;
+    console.log(motDePasse);
+    console.log(email, 'email');
     Users.findOne({ email })
         .then(user => {
             if (!user) {

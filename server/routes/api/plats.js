@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const plats = require('../../models/Plats');
-const jwtSecret = 'ma_cle_secrete'; 
+const jwtSecret = 'ma_cle_secrete';
 const { verifyToken } = require('./jwt');
 
 router.get('/', (req, res) => {

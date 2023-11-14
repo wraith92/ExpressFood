@@ -18,9 +18,9 @@ const Accueil = () => {
     }, [dispatch]);
 
     const addToCart = (plat) => {
-        const updatedCart = [...cart, plat];
-        setCart(updatedCart);
-        localStorage.setItem('cart', JSON.stringify(updatedCart));
+      const updatedCart = [...cart, plat];
+      setCart(updatedCart);
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
     };
 
     const openCartModal = () => setShowCartModal(true);
@@ -56,14 +56,32 @@ const Accueil = () => {
                     <Modal.Title>Votre panier</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {cart.map((item, index) => (
-                        <div key={index}>{/* Render cart items here */}</div>
+                    {Object.values(
+                      cart.reduce((acc, item) => {
+                        const key = `${item._id}-${item.nom}`;
+                        acc[key] = acc[key] || { ...item, count: 0 };
+                        acc[key].count++;
+                        return acc;
+                      }, {})
+                    ).map((item, index) => (
+                      <div key={index}>
+                        <p>
+                          {item.nom} {item.count > 1 ? `x${item.count}` : ''}
+                        </p>
+                        {/* Add other details of the item as needed */}
+                      </div>
                     ))}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={closeCartModal}>
-                        Fermer
-                    </Button>
+                  <Button variant="secondary" onClick={closeCartModal}>
+                    Fermer
+                  </Button>
+                  <Button variant="danger" onClick={() => {
+                      setCart([]);
+                      localStorage.removeItem('cart');
+                  }}>
+                      Vider
+                  </Button>
                 </Modal.Footer>
             </Modal>
         </div>

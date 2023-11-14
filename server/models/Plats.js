@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const PlatsSchema = new mongoose.Schema({
   nom: {
     type: String,
-    unique: true
+    unique: true,
   },
   prix: {
     type: Number,
@@ -21,9 +21,9 @@ const PlatsSchema = new mongoose.Schema({
   quantite: {
     type: Number,
   },
-  image :{
-    type:String
-  }
+  image: {
+    type: String,
+  },
 }, { versionKey: false });
 
 module.exports = mongoose.model('Plats', PlatsSchema, 'Plats');

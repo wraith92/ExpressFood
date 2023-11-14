@@ -1,0 +1,24 @@
+[
+    {
+      "id": 1,
+      "date": "01/01/2023",
+      "plat": "Poulet rôti",
+      "prix": 15.99,
+      "quantite": 2
+    },
+    {
+      "id": 2,
+      "date": "02/01/2023",
+      "plat": "Tarte aux pommes",
+      "prix": 8.99,
+      "quantite": 1
+    },
+    {
+      "id": 3,
+      "date": "03/01/2023",
+      "plat": "Pâtes à la carbonara",
+      "prix": 12.50,
+      "quantite": 3
+    }
+  ]
+  

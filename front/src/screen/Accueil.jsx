@@ -6,12 +6,13 @@ import Loading from '../components/Loading';
 import PlatCard from '../components/PlatCard';
 
 const Accueil = () => {
-    const dispatch = useDispatch();
-    const { plats = [], loading, error } = useSelector((state) => state.plats.data || {});
-
-    useEffect(() => {
-        dispatch(fetchPlatAction());
-    }, [dispatch]);
+  const dispatch = useDispatch();
+  const [menu, setMenu] = useState([]);
+  const plat = useSelector((state) => state.plat);
+  useEffect(() => {
+    dispatch(fetchPlatAction());
+  }, [dispatch]);
+  console.log(plat);
 
     return (
       <div>

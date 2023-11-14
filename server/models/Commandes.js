@@ -18,10 +18,6 @@ const CommandesSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users'
   },
-  quantite: {
-    type: Number,
-    required: true
-  },
   date: {
     type: Date,
     default: Date.now

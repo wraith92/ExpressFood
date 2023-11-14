@@ -10,7 +10,6 @@ const PlatsSchema = new mongoose.Schema({
   },
   ingredients: {
     type: [String],
-    unique: true
   },
   type: {
     type: String,
@@ -22,6 +21,9 @@ const PlatsSchema = new mongoose.Schema({
   quantite: {
     type: Number,
   },
+  image :{
+    type:String
+  }
 }, { versionKey: false });
 
 module.exports = mongoose.model('Plats', PlatsSchema, 'Plats');

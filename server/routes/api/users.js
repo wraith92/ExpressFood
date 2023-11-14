@@ -19,7 +19,7 @@ router.get('/:id', verifyToken, (req, res) => {
 router.post('/CreateUser', verifyToken, (req, res) => {
   Users.create(req.body)
     .then(user => res.json({ msg: 'User bien ajouté !' }))
-    .catch(err => res.status(400).json({ error: 'Impossible d\'ajouter le produit' }));
+    .catch(err => res.status(400).json({ error: 'Impossible d\'ajouter l\'user '}));
 });
 
 router.get('/email/:email', verifyToken, (req, res) => {

@@ -24,11 +24,6 @@ const UsersSchema = new mongoose.Schema({
   position: {
     type: [String]
   },
-  image :{
-    type:String
-  }
-
-
 }, { versionKey: false });
 
 module.exports = mongoose.model('Users', UsersSchema, 'Users');

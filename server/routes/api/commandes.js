@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const commandes = require('../models/commandes');
+const commandes = require('../../models/Commandes');
 const jwtSecret = 'ma_cle_secrete'; 
 const { verifyToken } = require('./jwt');
 
@@ -27,31 +27,6 @@ router.put('/:id', verifyToken, (req, res) => {
   commandes.findByIdAndUpdate(req.params.id, req.body)
     .then(commande => res.json({ msg: 'commande bien modifié!' }))
     .catch(err => res.status(400).json({ error: 'Erreur lors de la mise à jour du commande...' }));
-});
-
-router.put('/', verifyToken, async (req, res) => {
-  console.log(req.body);
-  try {
-    for (const commande of req.body) {
-      const { _id, quantite } = commande;
-
-      const result = await commandes.updateOne(
-        { _id: _id },
-        { $set: { quantite: quantite } }
-      );
-
-      if (result.nModified > 0) {
-        console.log(`commande avec l'ID ${_id} mis à jour`);
-      } else {
-        console.log(`Aucune mise à jour pour le commande avec l'ID ${_id}`);
-      }
-    }
-
-    res.json({ message: 'commande mis à jour avec succès' });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Erreur lors de la mise à jour des commandes' });
-  }
 });
 
 

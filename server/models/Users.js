@@ -22,8 +22,12 @@ const UsersSchema = new mongoose.Schema({
     type: String
   },
   position: {
-    type: String
+    type: [String]
+  },
+  image :{
+    type:String
   }
+
 
 }, { versionKey: false });
 

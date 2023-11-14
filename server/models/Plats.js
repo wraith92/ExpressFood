@@ -15,7 +15,13 @@ const PlatsSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-  }
+  },
+  description: {
+    type: String,
+  },
+  quantite: {
+    type: Number,
+  },
 }, { versionKey: false });
 
 module.exports = mongoose.model('Plats', PlatsSchema, 'Plats');

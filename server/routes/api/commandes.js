@@ -1,0 +1,64 @@
+const express = require('express');
+const router = express.Router();
+const commandes = require('../models/commandes');
+const jwtSecret = 'ma_cle_secrete'; 
+const { verifyToken } = require('./jwt');
+
+router.get('/', verifyToken, (req, res) => {
+  commandes.find()
+    .then(commandes => res.json(commandes))
+    .catch(err => res.status(404).json({ nocommandesFound: 'Pas de commandes trouvés...' }));
+});
+
+router.get('/:id', verifyToken, (req, res) => {
+  commandes.findById(req.params.id)
+    .then(commande => res.json(commande))
+    .catch(err => res.status(404).json({ commandeNotFound: 'commande non trouvé...' }));
+});
+
+
+router.post('/Createcommande', verifyToken, (req, res) => {
+  commandes.create(req.body)
+    .then(commande => res.json({ msg: 'commande bien ajouté !' }))
+    .catch(err => res.status(400).json({ error: 'Impossible d\'ajouter le commande' }));
+});
+
+router.put('/:id', verifyToken, (req, res) => {
+  commandes.findByIdAndUpdate(req.params.id, req.body)
+    .then(commande => res.json({ msg: 'commande bien modifié!' }))
+    .catch(err => res.status(400).json({ error: 'Erreur lors de la mise à jour du commande...' }));
+});
+
+router.put('/', verifyToken, async (req, res) => {
+  console.log(req.body);
+  try {
+    for (const commande of req.body) {
+      const { _id, quantite } = commande;
+
+      const result = await commandes.updateOne(
+        { _id: _id },
+        { $set: { quantite: quantite } }
+      );
+
+      if (result.nModified > 0) {
+        console.log(`commande avec l'ID ${_id} mis à jour`);
+      } else {
+        console.log(`Aucune mise à jour pour le commande avec l'ID ${_id}`);
+      }
+    }
+
+    res.json({ message: 'commande mis à jour avec succès' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Erreur lors de la mise à jour des commandes' });
+  }
+});
+
+
+router.delete('/:id', verifyToken, (req, res) => {
+  commandes.findByIdAndDelete(req.params.id)
+    .then(() => res.json({ success: 'commande supprimé avec succès' }))
+    .catch(err => res.status(404).json({ commandeNotFound: 'commande non trouvé...' }));
+});
+
+module.exports = router;

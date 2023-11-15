@@ -46,7 +46,6 @@ const Navbar = () => {
 
                         {storageUserinfo ? (
                             <>
-                                <Nav.Link as={Link} to="/cart">Panier</Nav.Link>
                                 <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                             </>
                         ) : (

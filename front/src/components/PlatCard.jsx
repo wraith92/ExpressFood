@@ -1,17 +1,10 @@
-// PlatCard.js
-import React, { useState } from 'react';
+import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-const PlatCard = ({ plats }) => {
-  const [cart, setCart] = useState([]);
-
-  const addToCart = (plat) => {
-    setCart([...cart, plat]);
-  };
-
+const PlatCard = ({ plats, addToCart }) => {
   return (
     <Row xs={1} md={3} className="g-4">
       {plats.map((plat) => (

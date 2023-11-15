@@ -6,7 +6,9 @@ import Accueil from './screen/Accueil';
 import DashboardAdmin from './screen/DashboardAdmin';
 import PageLivreur from './screen/PageLivreur';
 import LoginPage from './screen/LoginPage';
+import MapComponent from './components/MapComponent';
 const App = () => (
+  
   <Router>
     <Navbar />
     <Routes>
@@ -14,6 +16,8 @@ const App = () => (
       <Route path="/dashboard" element={<DashboardAdmin/>} />
       <Route path="/livreur" element={<PageLivreur/>} />
       <Route path="/login" element={<LoginPage/>} />
+      <Route path="/map" element={<MapComponent/>} />
+
     </Routes>
   </Router>
 );

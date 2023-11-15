@@ -1,7 +1,7 @@
-import React,{useEffect,useState} from "react";
-import { Link,useNavigate,useLocation } from "react-router-dom";
-import { Form,Button,Row,Col } from "react-bootstrap";
-import { useDispatch,useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Form, Button, Row, Col } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUserAction } from "../action/AuthAction";
 import FormContainer from "../components/FormContainer";
 import Loading from "../components/Loading";
@@ -10,23 +10,28 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
-    const [email,setEmail] = useState("");
-    const [motDePasse,setmotDePasse] = useState("");
-    const { loading,userInfo,error } = useSelector((state) => state.userinfo);
+    const [email, setEmail] = useState("");
+    const [motDePasse, setMotDePasse] = useState("");
+    const { loading, userinfo, error } = useSelector((state) => state.userLogin);
     const redirect = location.search ? location.search.split("=")[1] : "/";
- console.log(userInfo);
-    useEffect(() => {
-        if (userInfo) {
-            navigate("/");
-        }
-    },[navigate,userInfo,dispatch]);
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
-        dispatch(loginUserAction({ email, motDePasse }));
-           const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"));
-
+        await dispatch(loginUserAction({ email, motDePasse }));
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user) {
+            navigate(redirect);
+        }
+        // La redirection peut être effectuée directement dans le useEffect.
     };
+
+
+    useEffect(() => {
+        if (userinfo) {
+            localStorage.setItem("user", JSON.stringify(userinfo));
+            navigate(redirect);
+        }
+    }, [navigate, redirect, userinfo]);
 
 
     return (
@@ -37,17 +42,30 @@ const LoginPage = () => {
             <Form onSubmit={submitHandler}>
                 <Form.Group controlId="email">
                     <Form.Label>Email Address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)}></Form.Control>
+                    <Form.Control
+                        type="email"
+                        placeholder="Enter email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
                 </Form.Group>
                 <Form.Group controlId="motDePasse">
-                    <Form.Label>motDePasse</Form.Label>
-                    <Form.Control type="password" placeholder="Enter motDePasse" value={motDePasse} onChange={(e) => setmotDePasse(e.target.value)}></Form.Control>
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                        type="password"
+                        placeholder="Enter password"
+                        value={motDePasse}
+                        onChange={(e) => setMotDePasse(e.target.value)}
+                    />
                 </Form.Group>
-                <Button type="submit" variant="primary">Sign In</Button>
+                <Button type="submit" variant="primary">
+                    Sign In
+                </Button>
             </Form>
             <Row className="py-3">
                 <Col>
-                    New Customer ? <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>Register</Link>
+                    New Customer?{" "}
+                    <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>Register</Link>
                 </Col>
             </Row>
         </FormContainer>

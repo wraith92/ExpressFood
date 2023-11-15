@@ -7,13 +7,11 @@ import UserReducer from '../reducer/UserReducer';
 import PlatReducer from '../reducer/PlatReducer';
 import  AuthReducer  from '../reducer/AuthReducers';
 
-
-
-const rootReducer = combineReducers({
-    users:UserReducer,
-    plats:PlatReducer,
-    userinfo:AuthReducer,
-});
+    const rootReducer = combineReducers({
+        users: UserReducer,
+        plats: PlatReducer,
+        userLogin: AuthReducer,
+    });
 const middleware = [thunk];
 
 const store = createStore(

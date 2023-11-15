@@ -16,13 +16,12 @@ export const loginUserRequest = () => {
         type: LOGIN_USER_REQUEST,
     };
 };
- export const loginUserSuccess = (user) => {
+export const loginUserSuccess = (user) => {
     return {
         type: LOGIN_USER_SUCCESS,
         payload: user,
     };
-}
-
+};
 export const loginUserFailure = (error) => {
     return {
         type: LOGIN_USER_FAILURE,
@@ -42,7 +41,9 @@ export const loginUserAction = (user) => {
                 dispatch(loginUserFailure(errorMsg));
             });
     };
-}
+};
+
+
 
 
 

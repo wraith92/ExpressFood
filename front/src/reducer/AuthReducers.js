@@ -1,10 +1,9 @@
-import{
+import {
     LOGIN_USER_FAILURE,
     LOGIN_USER_REQUEST,
     LOGIN_USER_SUCCESS,
-    REGISTER_USER_FAILURE,
-    REGISTER_USER_REQUEST,
-    REGISTER_USER_SUCCESS,
+    LOGOUT_USER_SUCCESS
+
 } from "../constant/UserConstant";
 
 const storedUser = localStorage.getItem("user");
@@ -13,7 +12,6 @@ const initialState = {
     userinfo: storedUser ? JSON.parse(storedUser) : null,
     error: "",
 };
-
 export default function AuthReducer (state = initialState, action){
     const { type, payload } = action;
 
@@ -27,7 +25,7 @@ export default function AuthReducer (state = initialState, action){
             return {
                 ...state,
                 loading: false,
-                userinfo: payload,
+                userinfo: payload, // Make sure this matches the structure of the user information returned by the API.
             };
         case LOGIN_USER_FAILURE:
             return {
@@ -35,26 +33,14 @@ export default function AuthReducer (state = initialState, action){
                 loading: false,
                 error: payload,
             };
-        case REGISTER_USER_REQUEST:
+
+        case LOGOUT_USER_SUCCESS:
             return {
                 ...state,
-                loading: true,
+                userinfo: null,
             };
-        case REGISTER_USER_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                userinfo: payload,
-            };
-        case REGISTER_USER_FAILURE:
-            return {
-                ...state,
-                loading: false,
-                error: payload,
-            };
+        // Other cases for register user actions
         default:
             return state;
     }
 };
-
-

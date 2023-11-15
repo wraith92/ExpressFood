@@ -12,18 +12,20 @@ const LoginPage = () => {
     const dispatch = useDispatch();
     const [email,setEmail] = useState("");
     const [motDePasse,setmotDePasse] = useState("");
-    const { loading,userInfo,error } = useSelector((state) => state.userLogin);
+    const { loading,userInfo,error } = useSelector((state) => state.userinfo);
     const redirect = location.search ? location.search.split("=")[1] : "/";
-
+ console.log(userInfo);
     useEffect(() => {
         if (userInfo) {
-            navigate(redirect);
+            navigate("/");
         }
-    },[navigate,redirect,userInfo]);
+    },[navigate,userInfo,dispatch]);
 
     const submitHandler = (e) => {
         e.preventDefault();
         dispatch(loginUserAction({ email, motDePasse }));
+           const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"));
+
     };
 
 

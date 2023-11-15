@@ -21,6 +21,9 @@ const CommandesSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  statut: {
+    type:String
   }
 }, { versionKey: false });
 

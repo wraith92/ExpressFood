@@ -36,4 +36,24 @@ router.delete('/:id', verifyToken, (req, res) => {
     .catch(err => res.status(404).json({ commandeNotFound: 'commande non trouvé...' }));
 });
 
+router.put('/modifierStatut/:idCommande', verifyToken, async (req, res) => {
+  try {
+    const commandeId = req.params.idCommande;
+    const newStatut = req.body.statut;
+
+    const commande = await Commandes.findById(commandeId);
+    if (!commande) {
+      return res.status(404).json({ error: 'Commande non trouvée' });
+    }
+
+    commande.statut = newStatut;
+    await commande.save();
+
+    res.json({ success: true, message: 'Statut de la commande mis à jour avec succès' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erreur lors de la modification du statut de la commande' });
+  }
+});
+
 module.exports = router;

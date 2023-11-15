@@ -2,23 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import LoginForm from './LoginForm';
-import SignUpForm from './SignUpForm';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './store/config';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-<<<<<<< HEAD
   <Provider store={store}>
     <App />
   </Provider>
-=======
-  <React.StrictMode>
-    <SignUpForm />
-  </React.StrictMode>
->>>>>>> d4dc03fe03681e7800c7ba138ce9627a35b8fe41
 );
 
 // If you want to start measuring performance in your app, pass a function

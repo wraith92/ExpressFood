@@ -7,8 +7,9 @@ import DashboardAdmin from './screen/DashboardAdmin';
 import PageLivreur from './screen/PageLivreur';
 import LoginPage from './screen/LoginPage';
 import MapComponent from './components/MapComponent';
+import PageDeCommande from './screen/PageCommande';
 const App = () => (
-  
+
   <Router>
     <Navbar />
     <Routes>
@@ -17,6 +18,7 @@ const App = () => (
       <Route path="/livreur" element={<PageLivreur/>} />
       <Route path="/login" element={<LoginPage/>} />
       <Route path="/map" element={<MapComponent/>} />
+      <Route path="/commande" element={<PageDeCommande/>} />
 
     </Routes>
   </Router>

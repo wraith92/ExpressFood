@@ -47,6 +47,7 @@ const Navbar = () => {
                         {storageUserinfo ? (
                             <>
                                 <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                                <Nav.Link as={Link} to="/commande">Commande</Nav.Link>
                             </>
                         ) : (
                             <Nav.Link as={Link} to="/login">Login</Nav.Link>

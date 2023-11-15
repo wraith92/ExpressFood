@@ -29,20 +29,21 @@ export const loginUserFailure = (error) => {
         payload: error,
     };
 };
-
 export const loginUserAction = (user) => {
-    return (dispatch) => {
-        UserService.login(user)
-            .then((response) => {
-                const user = response.data;
-                dispatch(loginUserSuccess(user));
-            })
-            .catch((error) => {
-                const errorMsg = error.message;
-                dispatch(loginUserFailure(errorMsg));
-            });
+    return async (dispatch) => {
+        dispatch(loginUserRequest());
+        try {
+            const response = await UserService.login(user);
+            const userData = response.data;
+            dispatch(loginUserSuccess(userData));
+            return userData;
+        } catch (error) {
+            const errorMsg = error.message;
+            dispatch(loginUserFailure(errorMsg));
+            throw error;
+        }
     };
-}
+};
 
 
 

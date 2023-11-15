@@ -13,7 +13,6 @@ const initialState = {
     userinfo: storedUser ? JSON.parse(storedUser) : null,
     error: "",
 };
-
 export default function AuthReducer (state = initialState, action){
     const { type, payload } = action;
 

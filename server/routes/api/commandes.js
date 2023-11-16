@@ -2,8 +2,32 @@ const express = require('express');
 const router = express.Router();
 const commandes = require('../../models/Commandes');
 const plats = require('../../models/Plats');
-const jwtSecret = 'ma_cle_secrete'; 
 const { verifyToken } = require('./jwt');
+
+router.get('/commandesAujourdhui', verifyToken, (req, res) => {
+  const today = new Date();
+  console.log(today)
+  today.setHours(0,59,59,999)
+  commandes.find({ date: { $gte: today } })
+    .then(commandes => res.json(commandes))
+    .catch(err => res.status(404).json({ nocommandesFound: 'Pas de commandes trouvées aujourd\'hui...' }));
+});
+
+router.get('/client/:clientId', verifyToken, (req, res) => {
+  const clientId = req.params.clientId;
+
+  commandes.find({ client: clientId })
+    .then(commandes => res.json(commandes))
+    .catch(err => res.status(404).json({ nocommandesFound: 'Pas de commandes trouvées pour ce client...' }));
+});
+
+router.get('/livreur/:livreurId', verifyToken, (req, res) => {
+  const livreurId = req.params.livreurId;
+
+  commandes.find({ livreur: livreurId })
+    .then(commandes => res.json(commandes))
+    .catch(err => res.status(404).json({ nocommandesFound: 'Pas de commandes trouvées pour ce livreur...' }));
+});
 
 router.get('/', verifyToken, (req, res) => {
   commandes.find()
@@ -17,6 +41,13 @@ router.get('/:id', verifyToken, (req, res) => {
     .catch(err => res.status(404).json({ commandeNotFound: 'commande non trouvé...' }));
 });
 
+router.get('/statut/:statut', verifyToken, (req, res) => {
+  const statut = req.params.statut;
+
+  commandes.find({ statut: statut })
+    .then(commandes => res.json(commandes))
+    .catch(err => res.status(404).json({ nocommandesFound: 'Pas de commandes trouvées pour ce statut...' }));
+});
 
 router.post('/Createcommande', verifyToken, (req, res) => {
   commandes.create(req.body)
@@ -86,7 +117,5 @@ router.put('/decrementerQuantite/:idCommande', verifyToken, async (req, res) => 
     res.status(500).json({ error: 'Erreur lors de la décrémentation de la quantité des plats' });
   }
 });
-
-module.exports = router;
 
 module.exports = router;

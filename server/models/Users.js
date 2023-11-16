@@ -9,26 +9,29 @@ const UsersSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    unique: true
+    unique: true,
   },
   motDePasse: {
     type: String,
     required: true,
   },
   role: {
-    type: String
+    type: String,
   },
   statut: {
-    type: String
+    type: String,
   },
   position: {
-    type: [String]
+    latitude: {
+      type: Number,
+    },
+    longitude: {
+      type: Number,
+    },
   },
-  image :{
-    type:String
-  }
-
-
+  adresses: {
+    type: [String],
+  },
 }, { versionKey: false });
 
 module.exports = mongoose.model('Users', UsersSchema, 'Users');

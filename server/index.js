@@ -6,6 +6,7 @@ let cors = require('cors');
 const Users = require('./routes/api/users');
 const Auth = require('./routes/api/authentification');
 const Plats = require('./routes/api/plats');
+const Commandes = require('./routes/api/commandes');
 
 const app = express();
 
@@ -21,8 +22,9 @@ connectDB();
 app.use('/api/users', Users);
 app.use('/api/auth', Auth);
 app.use('/api/plats', Plats);
+app.use('/api/commandes', Commandes);
 
 
-app.listen(8080, () => {
+app.listen(3000, () => {
     console.log("Serveur à l'écoute");
 });

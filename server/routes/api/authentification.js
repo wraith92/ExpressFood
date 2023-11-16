@@ -30,7 +30,7 @@ router.post('/login', (req, res) => {
 
 
 router.post('/inscription', (req, res) => {
-    const { nom,prenom,email, motDePasse,role} = req.body;
+    const { nom,prenom,email, motDePasse,role,statut,position,adresses} = req.body;
     Users.findOne({email })
       .then(existingUser => {
         if (existingUser) {
@@ -43,7 +43,10 @@ router.post('/inscription', (req, res) => {
               prenom:prenom,
               email: email,
               motDePasse: hashedmotDePasse,
-              role:role
+              role:role,
+              statut:statut,
+              position:position,
+              adresses:adresses
             };
             Users.create(newUser)
               .then(user => res.json({ msg: 'Utilisateur bien ajouté !' }))

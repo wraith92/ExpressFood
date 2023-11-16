@@ -18,9 +18,10 @@ router.get('/:id', verifyToken, (req, res) => {
 
 
 router.post('/Createplat', verifyToken, (req, res) => {
+    console.log(req.body)
   plats.create(req.body)
     .then(plat => res.json({ msg: 'plat bien ajouté !' }))
-    .catch(err => res.status(400).json({ error: 'Impossible d\'ajouter le plat' }));
+    .catch(err => res.status(400).json({ error: 'Impossible d\'ajouter le plat' + err}));
 });
 
 router.put('/:id', verifyToken, (req, res) => {
@@ -30,7 +31,6 @@ router.put('/:id', verifyToken, (req, res) => {
 });
 
 router.put('/', verifyToken, async (req, res) => {
-  console.log(req.body);
   try {
     for (const plat of req.body) {
       const { _id, quantite } = plat;

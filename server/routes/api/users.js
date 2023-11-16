@@ -3,6 +3,7 @@ const router = express.Router();
 const Users = require('../../models/Users');
 const {verifyToken } = require('./jwt');
 const bcrypt = require('bcrypt');
+const {haversineDistance} = require('./geolocation')
 
 router.get('/', verifyToken, (req, res) => {
   Users.find()
@@ -19,7 +20,7 @@ router.get('/:id', verifyToken, (req, res) => {
 router.post('/CreateUser', verifyToken, (req, res) => {
   Users.create(req.body)
     .then(user => res.json({ msg: 'User bien ajouté !' }))
-    .catch(err => res.status(400).json({ error: 'Impossible d\'ajouter le produit' }));
+    .catch(err => res.status(400).json({ error: 'Impossible d\'ajouter l\'user '}));
 });
 
 router.get('/email/:email', verifyToken, (req, res) => {
@@ -92,4 +93,96 @@ router.put('/password/:id', verifyToken, (req, res) => {
     });
 });
 
+router.post('/addAddress/:userId', verifyToken, (req, res) => {
+  const userId = req.params.userId;
+
+  Users.findById(userId)
+    .then(user => {
+      if (!user) {
+        return res.status(404).json({ error: 'Utilisateur non trouvé' });
+      }
+
+      user.adresses.push(req.body.adresse);
+
+      return user.save();
+    })
+    .then(updatedUser => {
+      res.json({ msg: 'Adresse ajoutée avec succès', user: updatedUser });
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'Erreur lors de l\'ajout de l\'adresse' });
+    });
+});
+
+
+router.get('/livreurProche/:clientId', verifyToken, async (req, res) => {
+  try {
+    const clientId = req.params.clientId;
+
+    const client = await Users.findById(clientId);
+    if (!client || client.role !== 'client') {
+      return res.status(404).json({ error: 'Client non trouvé' });
+    }
+
+    const clientLatitude = client.position.latitude;
+    const clientLongitude = client.position.longitude;
+
+    const livreursLibres = await Users.find({
+      role: 'livreur',
+      statut: 'libre',
+      'position.latitude': { $exists: true },
+      'position.longitude': { $exists: true }
+    });
+
+    if (!livreursLibres || livreursLibres.length === 0) {
+      return res.status(404).json({ error: 'Aucun livreur libre trouvé' });
+    }
+
+    const livreursAvecDistance = livreursLibres.map(livreur => {
+      const livreurLatitude = livreur.position.latitude;
+      const livreurLongitude = livreur.position.longitude;
+      const distance = haversineDistance(clientLatitude, clientLongitude, livreurLatitude, livreurLongitude);
+
+      return {
+        livreur,
+        distance,
+      };
+    });
+
+    livreursAvecDistance.sort((a, b) => a.distance - b.distance);
+
+    const livreurProche = livreursAvecDistance[0].livreur;
+    res.json({ livreurProche});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erreur lors de la recherche du livreur' });
+  }
+});
+
+router.put('/modifierStatut/:id', verifyToken, async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const newStatut = req.body.statut;
+
+    const user = await Users.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'Utilisateur non trouvé' });
+    }
+
+    if (user.role !== 'livreur') {
+      return res.status(400).json({ error: 'L\'utilisateur n\'a pas le rôle de livreur' });
+    }
+
+    user.statut = newStatut;
+    await user.save();
+
+    res.json({ success: true, message: 'Statut mis à jour avec succès' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erreur lors de la modification du statut de l\'utilisateur' });
+  }
+});
+
 module.exports = router;
+

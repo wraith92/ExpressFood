@@ -1,37 +1,56 @@
-// PageLivreur.js
-import React, { useState } from 'react';
-import { Table, Button } from 'react-bootstrap';
-
+// Import des actions nécessaires
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
+import {
+  fetchCommandeAction,
+  updateCommandeAction, // Ajouter l'action pour mettre à jour le statut de la commande
+} from '../action/CommandeAction'; // Vérifier l'emplacement correct du fichier UserAction
+import { fetchUserAction } from '../action/UserAction';
 const PageLivreur = () => {
-  const [notifications, setNotifications] = useState([
-    { id: 1, message: 'Nouvelle commande passée' },
-  ]);
+  const dispatch = useDispatch();
 
-  const [commandesPassees, setCommandesPassees] = useState([
-    { id: 1, date: '01/01/2023', plat: 'Plat 1', prix: 10, quantite: 2 },
-    { id: 2, date: '02/01/2023', plat: 'Plat 2', prix: 15, quantite: 1 },
-  ]);
+  // Utilisation des données depuis le Redux store
+  const storageUserinfo = JSON.parse(localStorage.getItem('user'));
+  console.log(storageUserinfo.id);
 
-  const prendreEnCharge = (notificationId) => {
-    // Logique pour prendre en charge la commande associée à la notification
-    // (peut-être supprimer la notification et mettre à jour le statut de la commande)
-    setNotifications(notifications.filter((n) => n.id !== notificationId));
-    // Mettre à jour le statut de la commande ou effectuer d'autres actions nécessaires
+  const { commandes = [], loadingCommande, errorCommande } = useSelector(
+    (state) => state.commandes.data || {}
+  );
+  console.log(commandes);
+
+
+  // Les états de notifications et de commandes passées ne sont plus nécessaires
+  // Les données seront directement extraites du Redux store
+
+  const prendreEnCharge = (commandeId) => {
+    // Utiliser l'action pour mettre à jour le statut de la commande
+    const statut = 'en cours de livraison';
+    dispatch(updateCommandeAction(commandeId, statut));
   };
+
+  useEffect(() => {
+    // Fetch users et commandes on component mount
+    dispatch(fetchUserAction());
+    dispatch(fetchCommandeAction());
+  }, [dispatch]);
 
   return (
     <div>
-      <h2>Notifications</h2>
-      <ul>
-        {notifications.map((notification) => (
-          <li key={notification.id}>
-            {notification.message}
-            <Button variant="success" onClick={() => prendreEnCharge(notification.id)}>
+    <h2>Notifications</h2>
+    <ul>
+      {commandes
+        .filter((commande) => commande.statut === 'en attente' && commande.client === storageUserinfo.id)
+        .map((commande) => (
+          <li key={commande._id}>
+            Nouvelle commande passée
+            <Button variant="success" onClick={() => prendreEnCharge(commande._id)}>
               Prendre en charge
             </Button>
           </li>
         ))}
-      </ul>
+    </ul>
 
       <h2>Commandes Passées</h2>
       <Table striped bordered hover>
@@ -44,12 +63,12 @@ const PageLivreur = () => {
           </tr>
         </thead>
         <tbody>
-          {commandesPassees.map((commande) => (
+          {commandes.map((commande) => (
             <tr key={commande.id}>
               <td>{commande.date}</td>
-              <td>{commande.plat}</td>
+              <td>{commande.plats.map((plat) => plat.nom).join(', ')}</td>
               <td>{commande.prix}</td>
-              <td>{commande.quantite}</td>
+              <td>{commande.plats.length}</td>
             </tr>
           ))}
         </tbody>

@@ -8,6 +8,7 @@ import PageLivreur from './screen/PageLivreur';
 import LoginPage from './screen/LoginPage';
 import MapComponent from './components/MapComponent';
 import PageDeCommande from './screen/PageCommande';
+import Register from './screen/Register';
 const App = () => (
 
   <Router>
@@ -19,6 +20,7 @@ const App = () => (
       <Route path="/login" element={<LoginPage/>} />
       <Route path="/map" element={<MapComponent/>} />
       <Route path="/commande" element={<PageDeCommande/>} />
+      <Route path="/register" element={<Register/>} />
 
     </Routes>
   </Router>

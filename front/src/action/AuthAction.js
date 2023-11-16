@@ -8,6 +8,7 @@ import {
 
 } from "../constant/UserConstant";
 
+
 import UserService from "../service/Authservice";
 
 //login user
@@ -68,18 +69,18 @@ export const registerUserFailure = (error) => {
 };
 
 export const registerUserAction = (user) => {
-    return (dispatch) => {
-        UserService.register(user)
-            .then((response) => {
-                const user = response.data;
-                dispatch(registerUserSuccess(user));
-            })
-            .catch((error) => {
-                const errorMsg = error.message;
-                dispatch(registerUserFailure(errorMsg));
-            });
+    return async (dispatch) => {
+        dispatch(registerUserRequest());  // Assuming you have this action creator defined
+        try {
+            const response = await UserService.register(user);
+            const userData = response.data;
+            dispatch(registerUserSuccess(userData));
+        } catch (error) {
+            const errorMsg = error.message;
+            dispatch(registerUserFailure(errorMsg));
+        }
     };
-}
+};
 
 //logout user
 export const logoutUserAction = () => {

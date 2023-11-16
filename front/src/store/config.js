@@ -6,11 +6,15 @@ import thunk from 'redux-thunk';
 import UserReducer from '../reducer/UserReducer';
 import PlatReducer from '../reducer/PlatReducer';
 import  AuthReducer  from '../reducer/AuthReducers';
+import CommandeReducer from '../reducer/CommandeReducer';
+
 
     const rootReducer = combineReducers({
         users: UserReducer,
         plats: PlatReducer,
         userLogin: AuthReducer,
+        commandes: CommandeReducer,
+
     });
 const middleware = [thunk];
 

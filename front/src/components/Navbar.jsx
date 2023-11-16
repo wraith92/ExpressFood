@@ -16,16 +16,10 @@ const Navbar = () => {
     const isClient = storageUserinfo && storageUserinfo.role === 'client';
 
 
-
     const handleLogout = () => {
         dispatch(logoutUserAction());
         navigate('/');
     };
-
-
-
-
-
 
     return (
         <MyNav bg="dark" variant="dark" expand="lg">
@@ -47,6 +41,7 @@ const Navbar = () => {
                         {storageUserinfo ? (
                             <>
                                 <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                                <Nav.Link as={Link} to="/livreur">Livreur</Nav.Link>
                                 <Nav.Link as={Link} to="/commande">Commande</Nav.Link>
                             </>
                         ) : (

@@ -5,7 +5,7 @@ const plats = require('../../models/Plats');
 const jwtSecret = 'ma_cle_secrete';
 const { verifyToken } = require('./jwt');
 
-router.get('/', verifyToken, (req, res) => {
+router.get('/', (req, res) => {
   commandes.find()
     .then(commandes => res.json(commandes))
     .catch(err => res.status(404).json({ nocommandesFound: 'Pas de commandes trouvés...' }));
@@ -18,13 +18,13 @@ router.get('/:id', verifyToken, (req, res) => {
 });
 
 
-router.post('/Createcommande', verifyToken, (req, res) => {
+router.post('/Createcommande', (req, res) => {
   commandes.create(req.body)
     .then(commande => res.json({ msg: 'commande bien ajouté !' }))
     .catch(err => res.status(400).json({ error: 'Impossible d\'ajouter le commande' }));
 });
 
-router.put('/:id', verifyToken, (req, res) => {
+router.put('/:id', (req, res) => {
   commandes.findByIdAndUpdate(req.params.id, req.body)
     .then(commande => res.json({ msg: 'commande bien modifié!' }))
     .catch(err => res.status(400).json({ error: 'Erreur lors de la mise à jour du commande...' }));
@@ -37,7 +37,7 @@ router.delete('/:id', verifyToken, (req, res) => {
     .catch(err => res.status(404).json({ commandeNotFound: 'commande non trouvé...' }));
 });
 
-router.put('/modifierStatut/:idCommande', verifyToken, async (req, res) => {
+router.put('/modifierStatut/:idCommande', async (req, res) => {
   try {
     const commandeId = req.params.idCommande;
     const newStatut = req.body.statut;

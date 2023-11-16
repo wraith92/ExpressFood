@@ -5,7 +5,7 @@ const {verifyToken } = require('./jwt');
 const bcrypt = require('bcrypt');
 const {haversineDistance} = require('./geolocation')
 
-router.get('/', verifyToken, (req, res) => {
+router.get('/', (req, res) => {
   Users.find()
     .then(users => res.json(users))
     .catch(err => res.status(404).json({ nousersFound: 'Pas de users trouvés...' }));
@@ -17,7 +17,7 @@ router.get('/:id', verifyToken, (req, res) => {
     .catch(err => res.status(404).json({ userNotFound: 'Utilisateur non trouvé...' }));
 });
 
-router.post('/CreateUser', verifyToken, (req, res) => {
+router.post('/CreateUser', (req, res) => {
   Users.create(req.body)
     .then(user => res.json({ msg: 'User bien ajouté !' }))
     .catch(err => res.status(400).json({ error: 'Impossible d\'ajouter l\'user '}));
@@ -44,13 +44,13 @@ router.get('/prenom/:prenom', verifyToken, (req, res) => {
     .catch(err => res.status(404).json({ noUsersFound: 'Pas d\'utilisateur trouvé avec cet prénom...' }));
 });
 
-router.put('/:id', verifyToken, (req, res) => {
+router.put('/:id', (req, res) => {
   Users.findByIdAndUpdate(req.params.id, req.body)
     .then(user => res.json({ msg: 'Utilisateur bien modifié!' }))
     .catch(err => res.status(400).json({ error: 'Erreur lors de la mise à jour de l\'utilisateur...' }));
 });
 
-router.delete('/:id', verifyToken, (req, res) => {
+router.delete('/:id', (req, res) => {
   Users.findByIdAndDelete(req.params.id)
     .then(() => res.json({ success: 'Utilisateur supprimé avec succès' }))
     .catch(err => res.status(404).json({ userNotFound: 'Utilisateur non trouvé...' }));
@@ -116,7 +116,7 @@ router.post('/addAddress/:userId', verifyToken, (req, res) => {
 });
 
 
-router.get('/livreurProche/:clientId', verifyToken, async (req, res) => {
+router.get('/livreurProche/:clientId', async (req, res) => {
   try {
     const clientId = req.params.clientId;
 

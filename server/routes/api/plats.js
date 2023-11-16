@@ -22,6 +22,41 @@ router.get('/nom/:nom', verifyToken, (req, res) => {
     .catch(err => res.status(404).json({ noPlatsFound: 'Pas de plat avec ce nom...' }));
 });
 
+router.get('/dessert/', verifyToken, (req, res) => {
+  plats.find({ type: "dessert" })
+    .then(plat => res.json(plat))
+    .catch(err => res.status(404).json({ noPlatsFound: 'Pas de plat avec ce nom...' }));
+});
+
+router.get('/plat/', verifyToken, (req, res) => {
+  plats.find({ type: "plat" })
+    .then(plat => res.json(plat))
+    .catch(err => res.status(404).json({ noPlatsFound: 'Pas de plat avec ce nom...' }));
+});
+
+router.get('/PlatsDeJour', verifyToken, async (req, res) => {
+  try {
+    const desserts = await plats.aggregate([
+      { $match: { type: 'dessert' } },
+      { $sample: { size: 2 } }
+    ]);
+
+    const platsAleatoires = await plats.aggregate([
+      { $match: { type: 'plat' } },
+      { $sample: { size: 2 } }
+    ]);
+
+    const result = {
+      desserts: desserts,
+      plats: platsAleatoires
+    };
+
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: 'Une erreur est survenue lors de la récupération des plats.' });
+  }
+});
+
 router.get('/:id', verifyToken, (req, res) => {
   plats.findById(req.params.id)
     .then(plat => res.json(plat))

@@ -18,12 +18,19 @@ const CommandesSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users'
   },
+  client: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Users'
+  },
   date: {
     type: Date,
     default: Date.now
   },
   statut: {
     type:String
+  },
+  prix: {
+    type:Number
   }
 }, { versionKey: false });
 

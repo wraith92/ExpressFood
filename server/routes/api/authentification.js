@@ -16,7 +16,7 @@ router.post('/login', (req, res) => {
                 .then(match => {
                     if (match) {
                         const token = generateToken(user);
-                        res.json({ token, role: user.role, nom: user.nom});
+                        res.json({ token, role: user.role, nom: user.nom, id:user.id});
                     } else {
                         res.status(401).json({ message: 'Mot de passe incorrect.' });
                     }
@@ -34,7 +34,7 @@ router.post('/inscription', (req, res) => {
         if (existingUser) {
           return res.status(400).json({ error: 'adresse e-mail déjà utilisé' });
         }
-        bcrypt.hash(motDePasse, 10)
+        bcrypt.hash(motDePasse, 10) // 10 c'est le nombre de tours de hachage
           .then(hashedmotDePasse => {
             const newUser = {
               nom:nom,

@@ -1,46 +1,70 @@
 // DashboardAdmin.js
 
-import React, { useState, useEffect } from 'react';
-import Container from 'react-bootstrap/Container';
-import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import Container from "react-bootstrap/Container";
+import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
+import { useNavigate } from "react-router-dom";
+import { Line } from "react-chartjs-2";
+import { Row, Col, Card } from "react-bootstrap";
+import "chart.js/auto";
+
+import { useDispatch, useSelector } from "react-redux";
 import {
   fetchUserAction,
   updateUserAction,
   deleteUserAction,
-  addUserAction,
-} from '../action/UserAction';
+} from "../action/UserAction";
+import { registerUserAction } from "../action/AuthAction";
 
-import { fetchCommandeAction } from '../action/CommandeAction';
-import { fetchPlatAction } from '../action/PlatAction';
+import { fetchCommandeAction } from "../action/CommandeAction";
+import { fetchPlatAction } from "../action/PlatAction";
 
 const DashboardAdmin = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { users = [], loading, error } = useSelector(
-    (state) => state.users.data || {}
-  );
+  const {
+    users = [],
+    loading,
+    error,
+  } = useSelector((state) => state.users.data || {});
 
-  const { commandes = [], loadingCommande, errorCommande } = useSelector(
-    (state) => state.commandes.data || {}
-  );
+  const {
+    commandes = [],
+    loadingCommande,
+    errorCommande,
+  } = useSelector((state) => state.commandes.data || {});
 
-  const { plats = [], loadingPlat, errorPlat } = useSelector(
-    (state) => state.plats.data || {}
-  );
+  const {
+    plats = [],
+    loadingPlat,
+    errorPlat,
+  } = useSelector((state) => state.plats.data || {});
   console.log(plats);
   console.log(commandes);
   const [showModal, setShowModal] = useState(false);
   const [newUser, setNewUser] = useState({
-    nom: '',
-    email: '',
-    role: 'Livreur',
-    motDePasse: '',
+    nom: "",
+    email: "",
+    role: "",
+    motDePasse: "",
+    position: {
+      latitude: 48.8204173,
+      longitude: 2.2000949,
+    },
+    statut: "libre",
   });
+  const [usersToShow, setUsersToShow] = useState(5);
+
+  // Triez les utilisateurs par date dans l'ordre décroissant
+  const sortedUsers = users.slice().sort((a, b) => {
+    return new Date(a.date) - new Date(b.date);
+  });
+
+  // Filtrer les derniers utilisateurs
+  const latestUsers = sortedUsers.slice(0, usersToShow);
+ console.log('latestUsers:', latestUsers);
 
   useEffect(() => {
     // Fetch users on component mount
@@ -48,6 +72,22 @@ const DashboardAdmin = () => {
     dispatch(fetchCommandeAction());
     dispatch(fetchPlatAction());
   }, [dispatch]);
+
+  const chartData = {
+    labels: commandes.map((commande) =>
+      new Date(commande.date).toLocaleDateString()
+    ),
+    datasets: [
+      {
+        label: "Orders",
+        fill: false,
+        data: commandes.map((commande) => commande.plats.length),
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        borderWidth: 1,
+      },
+    ],
+  };
 
   const handleShowModal = () => {
     setShowModal(true);
@@ -60,11 +100,12 @@ const DashboardAdmin = () => {
   const handleAddUser = async () => {
     try {
       // Dispatch the action to add a new user
-      dispatch(addUserAction(newUser));
+      dispatch(registerUserAction(newUser));
     } catch (error) {
-      console.error('Error adding user:', error);
+      console.error("Error adding user:", error);
     }
     handleCloseModal();
+    window.location.reload();
   };
 
   const handleDeleteUser = async (userId) => {
@@ -72,9 +113,8 @@ const DashboardAdmin = () => {
       // Dispatch the action to delete a user
       dispatch(deleteUserAction(userId));
       window.location.reload();
-
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error("Error deleting user:", error);
     }
   };
 
@@ -83,18 +123,35 @@ const DashboardAdmin = () => {
       // Dispatch the action to update a user
       dispatch(updateUserAction(userId));
     } catch (error) {
-      console.error('Error updating user:', error);
+      console.error("Error updating user:", error);
     }
   };
-
   return (
     <Container>
       <h2 className="text-center">Tableau de bord administrateur</h2>
 
-      <Button variant="success" onClick={handleShowModal} className="mb-3">
+      <Row>
+        <Col md={6}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Commandes par date</Card.Title>
+              <Line data={chartData} />
+            </Card.Body>
+            
+          </Card>
+          
+          <Button variant="success" onClick={handleShowModal} className="mb-">
         Ajouter
       </Button>
+        
+        </Col>
 
+        <Col md={6}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Utilisateurs</Card.Title>
+              <Card.Title>Utilisateurs</Card.Title>
+    <div className="table-responsive">
       <Table bordered>
         <thead>
           <tr>
@@ -105,7 +162,7 @@ const DashboardAdmin = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
+          {latestUsers.map((user) => (
             <tr key={user._id}>
               <td>{user.nom}</td>
               <td>{user.email}</td>
@@ -131,72 +188,84 @@ const DashboardAdmin = () => {
           ))}
         </tbody>
       </Table>
+    </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
 
-      <Table bordered>
-        <thead>
-          <tr>
-            <th>Client</th>
-            <th>Livreur</th>
-            <th>Plats</th>
-            <th>Date</th>
-            <th>Statut</th>
-            <th>Prix</th>
-          </tr>
-        </thead>
-        <tbody>
-          {commandes.map((commande) => (
-            <tr key={commande._id}>
-              <td>
-                {/* Recherchez le client correspondant dans la liste de clients */}
-                {users.map((client) => {
-                  if (client._id === commande.client) {
-                    return client.nom;
-                  }
-                  return null;
-                })}
-              </td>
+      <Card className="mt-3">
+        <Card.Body>
+          <Card.Title>Commandes</Card.Title>
+          <div className="table-responsive">
+          <Table bordered >
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Livreur</th>
+                <th>Plats</th>
+                <th>Date</th>
+                <th>Statut</th>
+                <th>Prix</th>
+              </tr>
+            </thead>
+            <tbody>
+              {commandes.map((commande) => (
+                <tr key={commande._id}>
+                  <td>
+                    {/* Recherchez le client correspondant dans la liste de clients */}
+                    {users.map((client) => {
+                      if (client._id === commande.client) {
+                        console.log(commande.date);
+                        return client.nom;
+                      }
+                      return null;
+                    })}
+                  </td>
 
-              <td>
-                {/* Recherchez le livreur correspondant dans la liste de livreurs */}
-                {users.map((livreur) => {
-                  if (livreur._id === commande.livreur) {
-                    return livreur.nom;
-                  }
-                  return null;
-                })}
-              </td>
-              <td>
-                {commande.plats.map((plat) => {
-                  // Utilisez la méthode filter pour trouver le plat correspondant dans votre liste de plats
-                  const platCorrespondant = plats.find((p) => p.plat === plat.plat._id);
+                  <td>
+                    {/* Recherchez le livreur correspondant dans la liste de livreurs */}
+                    {users.map((livreur) => {
+                      if (livreur._id === commande.livreur) {
+                        return livreur.nom;
+                      }
+                      return null;
+                    })}
+                  </td>
+                  <td>
+                    {commande.plats.map((plat) => {
+                      // Use the filter method to find the corresponding dish based on plat._id
+                      const platCorrespondant = plats.filter(
+                        (p) => p._id === plat.plat
+                      )[0];
 
-                  // Si le plat correspondant est trouvé, affichez son nom
-                  if (platCorrespondant) {
-                    return (
-                      <p key={plat._id}>
-                        {platCorrespondant.nom} x {plat.quantite}
-                      </p>
-                    );
-                  } else {
-                    // Si le plat correspondant n'est pas trouvé, affichez un message d'erreur ou ignorez cet élément
-                    return (
-                      <p key={plat._id}>
-                        Plat introuvable x {plat.quantite}
-                      </p>
-                    );
-                  }
-                })}
-              </td>
-              <td>{commande.date}</td>
-              <td>{commande.statut}</td>
-              <td>{commande.prix} €</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+                      // If the corresponding dish is found, display its name
+                      if (platCorrespondant) {
+                        return (
+                          <p key={plat._id}>
+                            {platCorrespondant.nom} x {plat.quantite}
+                          </p>
+                        );
+                      }
 
+                      // If no corresponding dish is found, you can handle it accordingly
+                      return (
+                        <p key={plat._id}>Unknown Dish x {plat.quantite}</p>
+                      );
+                    })}
+                  </td>
+                  <td>{commande.date}</td>
+                  <td>{commande.statut}</td>
+                  <td>{commande.prix} €</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          </div>
+        
+        </Card.Body>
+      </Card>
 
-      {/* Modal pour ajouter un nouvel utilisateur */}
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>Ajouter un nouvel utilisateur</Modal.Title>
@@ -209,7 +278,9 @@ const DashboardAdmin = () => {
                 type="text"
                 placeholder="Entrez le nom"
                 value={newUser.nom}
-                onChange={(e) => setNewUser({ ...newUser, nom: e.target.value })}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, nom: e.target.value })
+                }
               />
             </Form.Group>
             <Form.Group controlId="formEmail">
@@ -218,7 +289,9 @@ const DashboardAdmin = () => {
                 type="email"
                 placeholder="Entrez l'email"
                 value={newUser.email}
-                onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, email: e.target.value })
+                }
               />
             </Form.Group>
             <Form.Group controlId="formRole">
@@ -226,10 +299,13 @@ const DashboardAdmin = () => {
               <Form.Control
                 as="select"
                 value={newUser.role}
-                onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, role: e.target.value })
+                }
               >
-                <option value="Livreur">Livreur</option>
-                <option value="Administrateur">Administrateur</option>
+                <option value="Livreur">livreur</option>
+                <option value="Administrateur">admin</option>
+                <option value="client">client</option>
               </Form.Control>
             </Form.Group>
             <Form.Group controlId="formPassword">
@@ -237,9 +313,10 @@ const DashboardAdmin = () => {
               <Form.Control
                 type="password"
                 placeholder="Entrez le mot de passe"
-                value={newUser.
-                  motDePasse}
-                onChange={(e) => setNewUser({ ...newUser, motDePasse: e.target.value })}
+                value={newUser.motDePasse}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, motDePasse: e.target.value })
+                }
               />
             </Form.Group>
           </Form>

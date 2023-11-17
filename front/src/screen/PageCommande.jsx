@@ -1,6 +1,5 @@
 import React, {  useState, useCallback,useEffect } from 'react';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
+import { Container, Row, Col, Card, ProgressBar, Button } from 'react-bootstrap';
 import MapComponent from '../components/MapComponent';
 import { useNavigate } from 'react-router-dom';
 import {  useDispatch } from 'react-redux';
@@ -11,8 +10,17 @@ import { useSelector } from 'react-redux';
 
 const Order = () => {
 
-  const cart = JSON.parse(localStorage.getItem('cart'));
+const cart = JSON.parse(localStorage.getItem('cart')) ?? [];
+
+// Rest of your code...
+
   const user = JSON.parse(localStorage.getItem('user'));
+// Calculate the total price dynamically based on the items in the cart
+const totalPrice = cart.reduce((total, item) => total + item.prix * item.quantity, 0).toFixed(2);
+
+// Calculate the delivery fee percentage and final price
+const deliveryFeePercentage = 0.05;
+const finalPrice = parseFloat(totalPrice) * (1 + deliveryFeePercentage);
   console.log('user:', user);
   console.log('cart:', cart);
 
@@ -127,26 +135,68 @@ const Order = () => {
 
   return (
     <Container>
-      <h2>Order Summary</h2>
-      {/* Your cart rendering code here */}
-
-      <MapComponent
-        apiKey={apiKey}
-        center={center}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-        handleAddressChange={handleAddressChange}
-        handleSearch={handleSearch}
-        onPositionChange={setPosition}
-      />
-
-      {/* Your position details rendering code here */}
-
+      {cart.length === 0 ? (
+        <h2>Votre panier est vide. Ajoutez des plats pour passer une commande.</h2>
+      ) : (
+        <Row>
+          <Col md={6}>
+            <Card className="my-3">
+              <Card.Header>
+                <h2>Order Summary</h2>
+              </Card.Header>
+              <Card.Body>
+                <ul>
+                  {cart.map((item) => (
+                    <li key={item._id}>
+                      {item.nom} - {item.prix}€ - {item.quantity}
+                    </li>
+                  ))}
+                </ul>
+  
+                {/* Display the total price, delivery fee, and final price */}
+                <div className="final-price">
+                  <p>Total Price: {parseFloat(totalPrice).toFixed(2)}€</p>
+                  <p>Delivery Fee (5%): {(parseFloat(totalPrice) * deliveryFeePercentage).toFixed(2)}€</p>
+                  <p>Final Price: {finalPrice.toFixed(2)}€</p>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+  
+          <Col md={6}>
+            <Card className="my-3">
+              <Card.Header>
+                <h2>Delivery Address</h2>
+              </Card.Header>
+              <Card.Body>
+                {/* Your position details rendering code here */}
+                <ProgressBar now={50} label={`50%`} className="mt-3" />
+  
+                <MapComponent
+                  apiKey={apiKey}
+                  center={center}
+                  onLoad={onLoad}
+                  onUnmount={onUnmount}
+                  handleAddressChange={handleAddressChange}
+                  handleSearch={handleSearch}
+                  onPositionChange={setPosition}
+                />
+  
+                <Button variant="primary" onClick={handleValidation} className="mt-3">
+                  Validate Order
+                </Button>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      )}
+  
       <Button variant="primary" onClick={handleValidation}>
         Validate Order
       </Button>
     </Container>
   );
+  
 };
 
 export default Order;

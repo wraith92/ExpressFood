@@ -7,7 +7,7 @@ import {
   fetchCommandeAction,
   updateCommandeAction, // Ajouter l'action pour mettre à jour le statut de la commande
 } from '../action/CommandeAction'; // Vérifier l'emplacement correct du fichier UserAction
-import { fetchUserAction } from '../action/UserAction';
+import { fetchUserAction, updateUserAction } from '../action/UserAction';
 const PageLivreur = () => {
   const dispatch = useDispatch();
 
@@ -18,7 +18,6 @@ const PageLivreur = () => {
   const { commandes = [], loadingCommande, errorCommande } = useSelector(
     (state) => state.commandes.data || {}
   );
-  console.log
 
 
   // Les états de notifications et de commandes passées ne sont plus nécessaires
@@ -26,8 +25,12 @@ const PageLivreur = () => {
 
   const prendreEnCharge = (commandeId) => {
     // Utiliser l'action pour mettre à jour le statut de la commande
-    const statut = 'en cours de livraison';
-    dispatch(updateCommandeAction(commandeId, statut));
+    const statut = {
+      statut: 'en cours'
+    }
+    dispatch(updateCommandeAction(commandeId, statut ));
+    dispatch(updateUserAction(storageUserinfo.id, {statut: 'en cours de livraison'}) );
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -36,12 +39,25 @@ const PageLivreur = () => {
     dispatch(fetchCommandeAction());
   }, [dispatch]);
 
+  const validateCommande = (commandeId) => {
+    // Utiliser l'action pour mettre à jour le statut de la commande
+    const statut = {
+      statut: 'validée'
+    }
+    dispatch(updateCommandeAction(commandeId, statut ));
+    dispatch(updateUserAction(storageUserinfo.id, {statut: 'libre'}) );
+    window.location.reload();
+  }
+
+
+  console.log('commandes:', commandes);
+
   return (
     <div>
     <h2>Notifications</h2>
     <ul>
       {commandes
-        .filter((commande) => commande.statut === 'en attente' && commande.client === storageUserinfo.id)
+        .filter((commande) => commande.statut === 'en attente' && commande.livreur === storageUserinfo.id)
         .map((commande) => (
           <li key={commande._id}>
             Nouvelle commande passée
@@ -52,6 +68,21 @@ const PageLivreur = () => {
         ))}
     </ul>
 
+    <h2>Commandes en cours de livraison</h2>
+    <ul>
+      {commandes
+        .filter((commande) => commande.statut === 'en cours' && commande.livreur === storageUserinfo.id)
+        .map((commande) => (
+          <li key={commande._id}>
+            Commande en cours de livraison
+            <Button variant="success" onClick={() => validateCommande(commande._id)}>
+              Valider la commande
+            </Button>
+          </li>
+        ))}
+    </ul>
+
+
       <h2>Commandes Passées</h2>
       <Table striped bordered hover>
         <thead>
@@ -60,15 +91,20 @@ const PageLivreur = () => {
             <th>Nom du plat</th>
             <th>Prix</th>
             <th>Quantité</th>
+            <th>statut</th>
+
           </tr>
         </thead>
         <tbody>
-          {commandes.map((commande) => (
+          {commandes
+        .filter((commande) => commande.livreur === storageUserinfo.id)
+        .map((commande) => (
             <tr key={commande.id}>
               <td>{commande.date}</td>
               <td>{commande.plats.map((plat) => plat.nom).join(', ')}</td>
               <td>{commande.prix}</td>
               <td>{commande.plats.length}</td>
+              <td>{commande.statut}</td>
             </tr>
           ))}
         </tbody>

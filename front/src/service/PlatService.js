@@ -18,6 +18,9 @@ const PlatService = {
     deletePlat: (id) => {
         return axios.delete(API_URL + 'plats/' + id);
     },
+    getPlatJoure: () => {
+        return axios.get(API_URL + 'plats/platJoure');
+    }
 };
 
 export default PlatService;

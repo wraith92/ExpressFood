@@ -111,11 +111,11 @@ export const updateCommandeFailure = (error) => {
     };
 }
 
-export const updateCommandeAction = (commande) => {
+export const updateCommandeAction = (id,commande) => {
     return async (dispatch) => {
         dispatch(updateCommandeRequest());
         try {
-            const response = await CommandeService.updateCommande(commande);
+            const response = await CommandeService.updateCommande( id,commande);
             const commandeData = response.data;
             dispatch(updateCommandeSuccess(commandeData));
             return commandeData;

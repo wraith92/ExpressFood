@@ -28,21 +28,27 @@ const Navbar = () => {
                 <MyNav.Toggle aria-controls="responsive-navbar-nav" />
                 <MyNav.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link as={Link} to="/dashboard" disabled={!isClient}>Dashboard user</Nav.Link>
 
-                        {isAdmin && (
+
+
+                        {storageUserinfo ? (
+                            <>
+                              {isAdmin && (
                             <Nav.Link as={Link} to="/admin-dashboard">Dashboard Admin</Nav.Link>
                         )}
 
                         {isDeliveryPerson && (
-                            <Nav.Link as={Link} to="/delivery-dashboard">Dashboard Livreur</Nav.Link>
+                            <Nav.Link as={Link} to="/livreur">Dashboard Livreur</Nav.Link>
                         )}
-
-                        {storageUserinfo ? (
+                        {isClient && (
                             <>
+
+                            <Nav.Link as={Link} to="/client">Suivie Commande</Nav.Link>
+                            <Nav.Link as={Link} to="/commande">Commande</Nav.Link>
+                            </>
+                        )}
                                 <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-                                <Nav.Link as={Link} to="/livreur">Livreur</Nav.Link>
-                                <Nav.Link as={Link} to="/commande">Commande</Nav.Link>
+
                             </>
                         ) : (
                             <Nav.Link as={Link} to="/login">Login</Nav.Link>

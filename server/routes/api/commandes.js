@@ -2,8 +2,32 @@ const express = require('express');
 const router = express.Router();
 const commandes = require('../../models/Commandes');
 const plats = require('../../models/Plats');
-const jwtSecret = 'ma_cle_secrete';
 const { verifyToken } = require('./jwt');
+
+router.get('/commandesAujourdhui', verifyToken, (req, res) => {
+  const today = new Date();
+  console.log(today)
+  today.setHours(0,59,59,999)
+  commandes.find({ date: { $gte: today } })
+    .then(commandes => res.json(commandes))
+    .catch(err => res.status(404).json({ nocommandesFound: 'Pas de commandes trouvées aujourd\'hui...' }));
+});
+
+router.get('/client/:clientId', verifyToken, (req, res) => {
+  const clientId = req.params.clientId;
+
+  commandes.find({ client: clientId })
+    .then(commandes => res.json(commandes))
+    .catch(err => res.status(404).json({ nocommandesFound: 'Pas de commandes trouvées pour ce client...' }));
+});
+
+router.get('/livreur/:livreurId', verifyToken, (req, res) => {
+  const livreurId = req.params.livreurId;
+
+  commandes.find({ livreur: livreurId })
+    .then(commandes => res.json(commandes))
+    .catch(err => res.status(404).json({ nocommandesFound: 'Pas de commandes trouvées pour ce livreur...' }));
+});
 
 router.get('/', (req, res) => {
   commandes.find()
@@ -11,17 +35,42 @@ router.get('/', (req, res) => {
     .catch(err => res.status(404).json({ nocommandesFound: 'Pas de commandes trouvés...' }));
 });
 
-router.get('/:id', verifyToken, (req, res) => {
+router.get('/:id', (req, res) => {
   commandes.findById(req.params.id)
     .then(commande => res.json(commande))
     .catch(err => res.status(404).json({ commandeNotFound: 'commande non trouvé...' }));
 });
 
+router.get('/statut/:statut', verifyToken, (req, res) => {
+  const statut = req.params.statut;
 
-router.post('/Createcommande', (req, res) => {
-  commandes.create(req.body)
-    .then(commande => res.json({ msg: 'commande bien ajouté !' }))
-    .catch(err => res.status(400).json({ error: 'Impossible d\'ajouter le commande' }));
+  commandes.find({ statut: statut })
+    .then(commandes => res.json(commandes))
+    .catch(err => res.status(404).json({ nocommandesFound: 'Pas de commandes trouvées pour ce statut...' }));
+});
+
+router.post('/Createcommande', async (req, res) => {
+  try {
+    if (!req.body.plats || !Array.isArray(req.body.plats)) {
+      return res.status(400).json({ error: 'Données d\'entrée invalides' });
+    }
+    await commandes.create(req.body);
+
+    const decrementPromises = req.body.plats.map(async (plat) => {
+      const plat1 = await plats.findById(plat.plat);
+      if (plat1) {
+        plat1.quantite -= plat.quantite;
+        await plat1.save();
+      }
+    });
+
+    await Promise.all(decrementPromises);
+
+    res.json({ msg: 'Commande bien ajoutée !' });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ error: 'Impossible d\'ajouter la commande' });
+  }
 });
 
 router.put('/:id', (req, res) => {
@@ -86,7 +135,5 @@ router.put('/decrementerQuantite/:idCommande', verifyToken, async (req, res) => 
     res.status(500).json({ error: 'Erreur lors de la décrémentation de la quantité des plats' });
   }
 });
-
-module.exports = router;
 
 module.exports = router;

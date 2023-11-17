@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
-import { fetchPlatAction } from '../action/PlatAction';
+import { fetchPlatJourAction } from '../action/PlatAction';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../components/Loading';
@@ -20,7 +20,7 @@ const Accueil = () => {
 
 
   useEffect(() => {
-    dispatch(fetchPlatAction());
+    dispatch(fetchPlatJourAction());
   }, [dispatch]);
 
   const addToCart = (plat) => {

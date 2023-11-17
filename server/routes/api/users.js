@@ -5,7 +5,7 @@ const {verifyToken } = require('./jwt');
 const bcrypt = require('bcrypt');
 const {haversineDistance} = require('./geolocation')
 
-router.get('/', (req, res) => {
+router.get('/',verifyToken, (req, res) => {
   Users.find()
     .then(users => res.json(users))
     .catch(err => res.status(404).json({ nousersFound: 'Pas de users trouvés...' }));
@@ -116,7 +116,7 @@ router.post('/addAddress/:userId', verifyToken, (req, res) => {
 });
 
 
-router.get('/livreurProche/:clientId', async (req, res) => {
+router.get('/livreurProche/:clientId', verifyToken, async (req, res) => {
   try {
     const clientId = req.params.clientId;
 

@@ -105,7 +105,13 @@ const finalPrice = parseFloat(totalPrice) * (1 + deliveryFeePercentage);
       await dispatch(updateUserAction(clientId,updatePosition));
 
       // Call the endpoint to find the nearest delivery person
-      const response = await axios.get(`http://localhost:8080/api/users/livreurProche/${clientId}`);
+      const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+      console.log('token:', user.token);
+      const response = await axios.get(`http://localhost:8080/api/users/livreurProche/${clientId}`, {
+      headers: {
+        'Authorization': `Bearer ${user.token}`,
+      },
+    });
       const livreurProche = response.data.livreurProche;
       console.log('livreurProche:', livreurProche._id);
 
@@ -152,7 +158,7 @@ const finalPrice = parseFloat(totalPrice) * (1 + deliveryFeePercentage);
                     </li>
                   ))}
                 </ul>
-  
+
                 {/* Display the total price, delivery fee, and final price */}
                 <div className="final-price">
                   <p>Total Price: {parseFloat(totalPrice).toFixed(2)}€</p>
@@ -162,7 +168,7 @@ const finalPrice = parseFloat(totalPrice) * (1 + deliveryFeePercentage);
               </Card.Body>
             </Card>
           </Col>
-  
+
           <Col md={6}>
             <Card className="my-3">
               <Card.Header>
@@ -171,7 +177,7 @@ const finalPrice = parseFloat(totalPrice) * (1 + deliveryFeePercentage);
               <Card.Body>
                 {/* Your position details rendering code here */}
                 <ProgressBar now={50} label={`50%`} className="mt-3" />
-  
+
                 <MapComponent
                   apiKey={apiKey}
                   center={center}
@@ -181,7 +187,7 @@ const finalPrice = parseFloat(totalPrice) * (1 + deliveryFeePercentage);
                   handleSearch={handleSearch}
                   onPositionChange={setPosition}
                 />
-  
+
                 <Button variant="primary" onClick={handleValidation} className="mt-3">
                   Validate Order
                 </Button>
@@ -190,13 +196,13 @@ const finalPrice = parseFloat(totalPrice) * (1 + deliveryFeePercentage);
           </Col>
         </Row>
       )}
-  
+
       <Button variant="primary" onClick={handleValidation}>
         Validate Order
       </Button>
     </Container>
   );
-  
+
 };
 
 export default Order;

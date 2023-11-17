@@ -36,7 +36,7 @@ router.post('/inscription', (req, res) => {
         if (existingUser) {
           return res.status(400).json({ error: 'adresse e-mail déjà utilisé' });
         }
-        bcrypt.hash(motDePasse, 10)
+        bcrypt.hash(motDePasse, 10) // 10 c'est le nombre de tours de hachage
           .then(hashedmotDePasse => {
             const newUser = {
               nom:nom,

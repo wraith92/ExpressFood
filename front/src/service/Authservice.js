@@ -35,7 +35,9 @@ const AuthService = {
             });
 
             if (response.data.token) {
-                localStorage.setItem('user', JSON.stringify(response.data));
+                const userStorage = JSON.parse(localStorage.getItem('user'));
+                // Include the token in the headers for future requests
+                axios.defaults.headers.common['Authorization'] = `Bearer ${userStorage.token}`;
             }
 
             return response.data;

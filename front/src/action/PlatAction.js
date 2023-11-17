@@ -39,3 +39,37 @@ export const fetchPlatAction = () => {
             });
     };
 }
+
+export const fetchPlatJourRequest = () => {
+    return {
+        type: FETCH_PLAT_REQUEST,
+    };
+}
+
+export const fetchPlatJourSuccess = (plats) => {
+    return {
+        type: FETCH_PLAT_SUCCESS,
+        payload: plats,
+    };
+}
+
+export const fetchPlatJourFailure = (error) => {
+    return {
+        type: FETCH_PLAT_FAILURE,
+        payload: error,
+    };
+};
+
+export const fetchPlatJourAction = () => {
+    return (dispatch) => {
+        PlatService.getPlatJoure()
+            .then((response) => {
+                const plats = response.data;
+                dispatch(fetchPlatJourSuccess(plats));
+            })
+            .catch((error) => {
+                const errorMsg = error.message;
+                dispatch(fetchPlatJourFailure(errorMsg));
+            });
+    };
+}

@@ -9,6 +9,7 @@ import LoginPage from './screen/LoginPage';
 import MapComponent from './components/MapComponent';
 import PageDeCommande from './screen/PageCommande';
 import Register from './screen/Register';
+import PageSuivieClient from './screen/Suivicommande';
 const App = () => (
 
   <Router>
@@ -21,6 +22,7 @@ const App = () => (
       <Route path="/map" element={<MapComponent/>} />
       <Route path="/commande" element={<PageDeCommande/>} />
       <Route path="/register" element={<Register/>} />
+      <Route path="/client" element={<PageSuivieClient/>} />
 
     </Routes>
   </Router>

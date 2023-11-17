@@ -10,8 +10,11 @@ const PlatCard = ({ plats, addToCart }) => {
       {plats.map((plat) => (
         <Col key={plat._id}>
           <Card style={{ width: '18rem', margin: '10px' }}>
+          <Card.Img variant="top" src={`/images/${plat.image}`} alt={plat.nom} />
+
             <Card.Body>
               <Card.Title>{plat.nom}</Card.Title>
+
               <Card.Subtitle className="mb-2 text-muted">{plat.type}</Card.Subtitle>
               <Card.Text>
                 Ingredients: {plat.ingredients.join(', ')}

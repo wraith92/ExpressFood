@@ -34,11 +34,11 @@ MongoDB Atlas est un service cloud de base de données MongoDB entièrement gér
  une sécurité et une évolutivité élevées pour les applications modernes.
 
 # Trello: Répartition des Tâches
-- [Lien vers le Trello] =>
+- [Lien vers le Trello] => https://trello.com/b/4KDunMl7/projet-expressfood
 Suivez notre progression et la répartition des tâches sur le tableau Trello. 
 
 # Présentation
-- [Support de Présentation] =>
+- [Support de Présentation] => https://www.canva.com/design/DAF0Vc9PepA/AVFjYb7e8pyP2upZ1mWtgg/edit?utm_content=DAF0Vc9PepA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 Consultez notre présentation pour obtenir un aperçu des principaux résultats du projet.
 
 
@@ -100,4 +100,16 @@ Consultez notre présentation pour obtenir un aperçu des principaux résultats 
 
   => http://villemin.gerard.free.fr/aGeograp/Distance.htm
 
+Déploiement :
 
+Back-end :Notre backend a récemment été déployé avec succès sur Vercel, une plateforme de déploiement 
+moderne et efficace. Vercel offre une solution intégrée qui simplifie le processus de déploiement, 
+garantissant une gestion aisée de notre infrastructure backend. Cette plateforme se distingue par 
+sa facilité d'utilisation, sa scalabilité instantanée, et ses fonctionnalités de déploiement continu. 
+En optant pour Vercel, nous nous assurons que notre application bénéficie d'une performance optimale
+et que les mises à jour sont rapidement intégrées.
+Cette démarche s'inscrit dans notre engagement envers l'amélioration constante de l'expérience utilisateur,
+en exploitant les avantages offerts par des solutions de déploiement modernes comme Vercel.
+
+lien => la majorité des routes sont sécurisées (token), on a cette route qui est acceccible par tout le monde.
+https://express-food.vercel.app/api/plats/

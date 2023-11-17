@@ -1,7 +1,8 @@
 // AuthService.js
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/';
+
+const API_URL = 'https://express-food.vercel.app/' || 'http://localhost:8080/';
 
 const AuthService = {
     login: async ({ email, motDePasse }) => {

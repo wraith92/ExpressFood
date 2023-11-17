@@ -51,22 +51,27 @@ Consultez notre présentation pour obtenir un aperçu des principaux résultats 
 {
     "email": "jane.smith@gmail.com",
     "motDePasse": "123456789",
+    "role": "client",
   }
   {
     "email": "alice.martin@gmail.com",
     "motDePasse": "123456789",
+    "role": "livreur",
   }
   {
     "email": "paul.dupont@gmail.com",
     "motDePasse": "123456789",
+    "role": "client",
   }
   {
     "email": "maria.garcia@gmail.com",
     "motDePasse": "123456789", 
+    "role": "admin",
   }
   {
     "email": "li.chen@gmail.com",
     "motDePasse": "123456789",
+    "role": "livreur",
   },
   {
     "email": "robert.johnson@gmail.com",
@@ -79,10 +84,12 @@ Consultez notre présentation pour obtenir un aperçu des principaux résultats 
   {
     "email": "carlos.lopez@gmail.com",
     "motDePasse": "123456789",
+    "role": "client",
   },
   {
     "email": "fatima.ahmed@gmail.com",
     "motDePasse": "123456789",
+    "role": "livreur",
   }
 
   // le calcul de la distance

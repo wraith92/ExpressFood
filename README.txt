@@ -27,16 +27,11 @@ git clone ‘lien vers notre repo’
 
 6. **Base de Données:**
 
- 	**Invitation à MongoDB Atlas:**
-   - Avant de pouvoir accéder à la base de données, vous devez nous fournir votre adresse e-mail associée à MongoDB Atlas.
-   - Une fois que nous vous aurons envoyé une invitation, connectez-vous à MongoDB Atlas avec vos identifiants.
+### MongoDB Atlas
 
- 	**Ajout de l'Adresse IP:**
-   - Dans le tableau de bord de MongoDB Atlas, accédez à la section "Network Access" (Accès réseau).
-
-    **Ajoutez votre Adresse IP:**
-   - Cliquez sur le bouton "Add IP Address" (Ajouter une adresse IP).
-   - Ajoutez l'adresse IP publique depuis laquelle vous accéderez à la base de données.
+Ce projet utilise MongoDB Atlas comme système de gestion de base de données. 
+MongoDB Atlas est un service cloud de base de données MongoDB entièrement géré qui offre une fiabilité,
+ une sécurité et une évolutivité élevées pour les applications modernes.
 
 # Trello: Répartition des Tâches
 - [Lien vers le Trello] =>

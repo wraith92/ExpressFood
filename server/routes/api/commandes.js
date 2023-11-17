@@ -49,10 +49,28 @@ router.get('/statut/:statut', verifyToken, (req, res) => {
     .catch(err => res.status(404).json({ nocommandesFound: 'Pas de commandes trouvées pour ce statut...' }));
 });
 
-router.post('/Createcommande', verifyToken, (req, res) => {
-  commandes.create(req.body)
-    .then(commande => res.json({ msg: 'commande bien ajouté !' }))
-    .catch(err => res.status(400).json({ error: 'Impossible d\'ajouter le commande' }));
+router.post('/Createcommande', verifyToken, async (req, res) => {
+  try {
+    if (!req.body.plats || !Array.isArray(req.body.plats)) {
+      return res.status(400).json({ error: 'Données d\'entrée invalides' });
+    }
+    await commandes.create(req.body);
+
+    const decrementPromises = req.body.plats.map(async (plat) => {
+      const plat1 = await plats.findById(plat.plat);
+      if (plat1) {
+        plat1.quantite -= plat.quantite;
+        await plat1.save();
+      }
+    });
+
+    await Promise.all(decrementPromises);
+
+    res.json({ msg: 'Commande bien ajoutée !' });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ error: 'Impossible d\'ajouter la commande' });
+  }
 });
 
 router.put('/:id', verifyToken, (req, res) => {

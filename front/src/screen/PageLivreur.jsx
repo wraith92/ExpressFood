@@ -18,7 +18,7 @@ const PageLivreur = () => {
   const { commandes = [], loadingCommande, errorCommande } = useSelector(
     (state) => state.commandes.data || {}
   );
-  console.log(commandes);
+  console.log
 
 
   // Les états de notifications et de commandes passées ne sont plus nécessaires

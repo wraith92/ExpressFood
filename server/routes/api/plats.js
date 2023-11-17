@@ -46,10 +46,7 @@ router.get('/PlatsDeJour', verifyToken, async (req, res) => {
       { $sample: { size: 2 } }
     ]);
 
-    const result = {
-      desserts: desserts,
-      plats: platsAleatoires
-    };
+    const result = [...desserts, ...platsAleatoires];
 
     res.json(result);
   } catch (err) {

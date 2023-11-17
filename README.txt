@@ -85,4 +85,17 @@ Consultez notre présentation pour obtenir un aperçu des principaux résultats 
     "motDePasse": "123456789",
   }
 
+  // le calcul de la distance
+  Pour calculer la distance entre un livreur et un client en se basant sur leurs coordonnées 
+  de latitude et de longitude, vous pouvez utiliser la formule haversine. 
+  Cette formule prend en compte la courbure de la Terre pour fournir une estimation 
+  plus précise de la distance entre deux points géographiques. La formule convertit 
+  d'abord les coordonnées de degrés en radians, puis utilise la différence de latitudes 
+  et de longitudes pour calculer la distance sur la sphère terrestre. Enfin, la distance 
+  est obtenue en multipliant le résultat par le rayon de la Terre (en kilomètres). 
+  Vous pouvez intégrer cette formule dans votre application pour déterminer la distance 
+  entre le livreur et le client.
+
+  => http://villemin.gerard.free.fr/aGeograp/Distance.htm
+
 

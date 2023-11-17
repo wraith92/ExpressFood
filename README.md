@@ -113,3 +113,7 @@ en exploitant les avantages offerts par des solutions de déploiement modernes c
 
 lien => la majorité des routes sont sécurisées (token), on a cette route qui est acceccible par tout le monde.
 https://express-food.vercel.app/api/plats/
+
+Front-end : https://wraith92.github.io/ExpressFood/
+
+Le déploiement de notre frontend a été réalisé avec succès sur la plateforme Git, offrant une visibilité et une accessibilité accrues à notre application. Cependant, nous avons identifié un défi lié à la politique Same-Origin Resource Sharing (CORS). Malheureusement, cela a restreint notre capacité à effectuer des appels directs à l'API depuis le frontend. 

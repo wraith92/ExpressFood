@@ -1,7 +1,7 @@
 import axios from "axios";
 import { addToken } from "../midelware/config";
 
-const API_URL = "http://localhost:8080/api/";
+const API_URL = 'https://express-food.vercel.app/api/' || 'https://express-food.vercel.app/api/';
 
 
 const UserService = {
